@@ -1,0 +1,31 @@
+"use strict";
+
+
+const btnCookies = document.querySelector(".cookies--btn");
+btnCookies.addEventListener("click", function () {
+  document.getElementById("cookies").style.display = "none";
+});
+
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  fetch("http://127.0.0.1:3000/login", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Login Failed");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      window.location.href = "/dashboard.html";
+    })
+    .catch((error) => console.error("There is an Error", error));
+});
